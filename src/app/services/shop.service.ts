@@ -8,13 +8,17 @@ import { environment } from 'src/environments/environment';
 })
 export class ShopService {
 
-  private URL_PATH = "/products?limit=10"
+  private URL_PATH = "/products"
 
   constructor(
     private _http: HttpClient
   ) { }
 
   getAllProducts(): Observable<any> {
-    return this._http.get(environment.url + this.URL_PATH);
+    return this._http.get(environment.url + this.URL_PATH + "?limit=10");
+  }
+
+  getSkipProduct(skip: number): Observable<any> {
+    return this._http.get(`${environment.url}${this.URL_PATH}?limit=10&skip=${skip}`);
   }
 }
