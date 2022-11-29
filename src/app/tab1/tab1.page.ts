@@ -1,4 +1,5 @@
 import { Component } from '@angular/core';
+import { ShopService } from '../services/shop.service';
 
 @Component({
   selector: 'app-tab1',
@@ -7,6 +8,18 @@ import { Component } from '@angular/core';
 })
 export class Tab1Page {
 
-  constructor() {}
+  products: any[] = [];
+
+  constructor(
+    private service: ShopService
+  ) {}
+
+  ngOnInit(){
+    this.getProducts()
+  }
+
+  private getProducts(){
+    this.service.getAllProducts().subscribe(response => this.products = [...response.products])
+  }
 
 }
