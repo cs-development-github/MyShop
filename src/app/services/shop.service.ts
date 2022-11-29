@@ -21,4 +21,8 @@ export class ShopService {
   getSkipProduct(skip: number): Observable<any> {
     return this._http.get(`${environment.url}${this.URL_PATH}?limit=10&skip=${skip}`);
   }
+
+  getProductByCategory(category: string): Observable<any> {
+    return this._http.get(`${environment.url}${this.URL_PATH}/category/${category}`);
+  }
 }

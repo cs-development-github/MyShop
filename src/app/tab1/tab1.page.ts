@@ -12,6 +12,13 @@ export class Tab1Page {
 
   products: any[] = [];
   count: number = 10;
+  categoryMode = false;
+  categories: any[] = [
+    {category:'smartphones', traduction: 'Téléphonies'},
+    {category:'laptops', traduction: 'Ordinateurs'},
+    {category:'fragrances', traduction: 'Parfums'},
+    {category:'skincare', traduction: 'Soins du visage'},
+  ];
 
   constructor(
     private service: ShopService,
@@ -20,6 +27,8 @@ export class Tab1Page {
 
   ngOnInit(){
     this.getProducts()
+    console.log("category mode", this.categoryMode);
+    
   }
 
   private getProducts(){
@@ -49,5 +58,21 @@ export class Tab1Page {
     });
 
     await toast.present();
+  }
+
+  selectCategory(category: string){
+    this.categoryMode = true
+    console.log("category mode", this.categoryMode);
+    this.products = []
+    this.service.getProductByCategory(category).subscribe(response => this.products = [...response.products])
+  }
+
+  resetCategoryMode(){
+    console.log("Je reset la catégorie");
+    
+    this.categoryMode = false;
+    console.log("category mode", this.categoryMode);
+    this.products = [];
+    this.getProducts();
   }
 }
