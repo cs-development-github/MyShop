@@ -1,7 +1,7 @@
 import { Component } from '@angular/core';
 import { ShopService } from '../services/shop.service';
 
-import { InfiniteScrollCustomEvent } from '@ionic/angular';
+import { InfiniteScrollCustomEvent, ToastController } from '@ionic/angular';
 
 @Component({
   selector: 'app-tab1',
@@ -11,10 +11,11 @@ import { InfiniteScrollCustomEvent } from '@ionic/angular';
 export class Tab1Page {
 
   products: any[] = [];
-  count: number = 0;
+  count: number = 10;
 
   constructor(
-    private service: ShopService
+    private service: ShopService,
+    private toastController: ToastController,
   ) {}
 
   ngOnInit(){
@@ -32,8 +33,21 @@ export class Tab1Page {
   onIonInfinite(ev: any) {
     this.generateItems();
     this.count += 10;
+    if(this.count >= 110){
+      this.presentToast('bottom');
+    }    
     setTimeout(() => {
       (ev as InfiniteScrollCustomEvent).target.complete();
     }, 500);
+  }
+
+  async presentToast(position: 'top' | 'middle' | 'bottom') {
+    const toast = await this.toastController.create({
+      message: 'Vous êtes arriver en bas',
+      duration: 2500,
+      position: position
+    });
+
+    await toast.present();
   }
 }
