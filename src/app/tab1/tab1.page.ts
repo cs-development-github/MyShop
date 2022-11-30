@@ -11,7 +11,6 @@ import { InfiniteScrollCustomEvent, ToastController } from '@ionic/angular';
 export class Tab1Page {
 
   products: any[] = [];
-  count: number = 10;
   categoryMode = false;
   categories: any[] = [
     {category:'smartphones', traduction: 'Téléphonies'},
@@ -27,22 +26,19 @@ export class Tab1Page {
 
   ngOnInit(){
     this.getProducts()
-    console.log("category mode", this.categoryMode);
-    
   }
 
   private getProducts(){
     this.service.getAllProducts().subscribe(response => this.products = [...response.products])
   }
 
-  private generateItems(){
-    this.service.getSkipProduct(this.count).subscribe(response => this.products.push(...response.products));
+  private generateProducts(){
+    this.service.getSkipProduct(this.products.length).subscribe(response => this.products.push(...response.products));
   }
 
   onIonInfinite(ev: any) {
-    this.generateItems();
-    this.count += 10;
-    if(this.count >= 110){
+    this.generateProducts();
+    if(this.products.length == 100){
       this.presentToast('bottom');
     }    
     setTimeout(() => {
@@ -67,9 +63,7 @@ export class Tab1Page {
     this.service.getProductByCategory(category).subscribe(response => this.products = [...response.products])
   }
 
-  resetCategoryMode(){
-    console.log("Je reset la catégorie");
-    
+  resetCategoryMode(){    
     this.categoryMode = false;
     console.log("category mode", this.categoryMode);
     this.products = [];
